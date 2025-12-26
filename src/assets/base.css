@@ -1,0 +1,52 @@
+/* Color palette */
+:root {
+  /* Primary colors */
+  --color-primary: #6366f1;
+  --color-primary-hover: #4f46e5;
+  --color-primary-light: rgba(99, 102, 241, 0.1);
+
+  /* Background colors - Light theme */
+  --color-background: #ffffff;
+  --color-background-soft: #f8fafc;
+  --color-background-mute: #f1f5f9;
+
+  /* Text colors */
+  --color-text: #1e293b;
+  --color-text-secondary: #64748b;
+  --color-text-muted: #94a3b8;
+
+  /* Border */
+  --color-border: #e2e8f0;
+
+  /* Shadows */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.07);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --transition-fast: 150ms ease;
+  --transition-normal: 300ms ease;
+
+  /* Layout */
+  --header-height: 64px;
+  --player-height: 80px;
+  --section-gap: 40px;
+}
+
+/* Dark theme */
+[data-theme="dark"],
+.dark {
+  --color-primary: #818cf8;
+  --color-primary-hover: #6366f1;
+  --color-primary-light: rgba(129, 140, 248, 0.15);
+
+  --color-background: #0f172a;
+  --color-background-soft: #1e293b;
+  --color-background-mute: #334155;
+
+  --color-text: #f8fafc;
+  --color-text-secondary: #94a3b8;
+  --color-text-muted: #64748b;
+
+  --color-border: #334155;
+}
