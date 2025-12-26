@@ -19,20 +19,11 @@ export default defineConfig({
     },
   },
   build: {
-    // 生产构建优化
-    minify: 'terser',
-    terserOptions: {
-      compress: {
-        drop_console: true,
-        drop_debugger: true
-      }
-    },
     rollupOptions: {
       output: {
         // 代码分割优化
         manualChunks: {
-          'vue-vendor': ['vue', 'vue-router', 'pinia'],
-          'vueuse': ['@vueuse/core']
+          'vue-vendor': ['vue', 'vue-router', 'pinia']
         }
       }
     }
