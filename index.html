@@ -64,6 +64,16 @@
   <body>
     <div id="app" class="app-loading"></div>
     <script type="module" src="/src/main.js"></script>
+    <script>
+      // 加载超时检测
+      setTimeout(function() {
+        var app = document.getElementById('app');
+        if (app && app.classList.contains('app-loading')) {
+          app.innerHTML = '<div style="text-align:center;padding:40px;"><h2>加载超时</h2><p>请刷新页面重试，或检查网络连接</p><button onclick="location.reload()" style="padding:10px 20px;cursor:pointer;">刷新页面</button></div>';
+          app.classList.remove('app-loading');
+        }
+      }, 10000);
+    </script>
     <noscript>
       <div style="padding: 20px; text-align: center;">
         <h2>请启用 JavaScript</h2>
