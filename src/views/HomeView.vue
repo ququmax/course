@@ -1,431 +1,280 @@
 <template>
   <div class="home-view">
-    <!-- Hero section -->
-    <section class="hero-section">
-      <div class="hero-content">
-        <h1>发现你的音乐</h1>
-        <p>海量音乐，尽在指尖。现在开始听歌吧！</p>
-        <button class="btn btn-primary btn-lg" @click="playRandomFromChart" aria-label="随机播放歌曲">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <polygon points="5 3 19 12 5 21 5 3"></polygon>
-          </svg>
-          随机播放
-        </button>
-      </div>
-    </section>
+    <header class="hero">
+      <h1>📚 数据结构与算法学习平台</h1>
+      <p class="tagline">期末复习神器 · 考点一网打尽</p>
+    </header>
 
-    <!-- Daily Mix (for logged-in users) -->
-    <section v-if="isLoggedIn && dailyMix" class="section">
-      <div class="section-header">
-        <h2>{{ dailyMix.name }}</h2>
-        <p class="section-desc">{{ dailyMix.description }}</p>
-      </div>
-      <div class="songs-grid">
-        <SongCard 
-          v-for="(song, index) in dailyMix.songs" 
-          :key="song.id" 
-          :song="song"
-          :playlist="dailyMix.songs"
-          :index="index"
-        />
-      </div>
-    </section>
+    <div class="cards-grid">
+      <router-link to="/dsa" class="card card-1">
+        <span class="card-icon">📖</span>
+        <h2>知识点速查</h2>
+        <p>时间复杂度、排序算法、数据结构详解、高频考点速记</p>
+        <span class="card-btn">开始学习 →</span>
+      </router-link>
 
-    <!-- Charts section -->
-    <section class="section">
-      <div class="section-header">
-        <h2>热门榜单</h2>
-        <router-link to="/charts" class="see-all">查看全部</router-link>
-      </div>
-      <div class="charts-grid">
-        <div 
-          v-for="chart in charts" 
-          :key="chart.id" 
-          class="chart-card"
-          @click="goToChart(chart)"
-          tabindex="0"
-          role="article"
-          :aria-label="`${chart.name} - ${chart.songs.length}首歌曲`"
-          @keydown.enter="goToChart(chart)"
-        >
-          <img 
-            :src="chart.cover" 
-            :alt="chart.name" 
-            class="chart-cover" 
-            loading="lazy"
-            decoding="async"
-            width="80"
-            height="80"
-          />
-          <div class="chart-info">
-            <h3>{{ chart.name }}</h3>
-            <p>{{ chart.description }}</p>
-            <span class="song-count">{{ chart.songs.length }} 首歌曲</span>
-          </div>
-          <button class="play-chart-btn" @click.stop="playChart(chart)" aria-label="播放该榜单">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-              <polygon points="5 3 19 12 5 21 5 3"></polygon>
-            </svg>
-          </button>
+      <router-link to="/algorithm" class="card card-2">
+        <span class="card-icon">💻</span>
+        <h2>算法代码示例</h2>
+        <p>经典算法实现、逐行注释、可运行演示、复杂度分析</p>
+        <span class="card-btn">查看代码 →</span>
+      </router-link>
+
+      <router-link to="/interview" class="card card-3">
+        <span class="card-icon">🎯</span>
+        <h2>面试题精选</h2>
+        <p>高频面试题、详细解析、代码模板、举一反三</p>
+        <span class="card-btn">刷题闯关 →</span>
+      </router-link>
+
+      <router-link to="/practice" class="card card-4">
+        <span class="card-icon">🎮</span>
+        <h2>交互式练习</h2>
+        <p>排序可视化、二叉树操作、栈队列模拟、链表操作</p>
+        <span class="card-btn">动手实践 →</span>
+      </router-link>
+    </div>
+
+    <section class="features">
+      <h2>✨ 平台特色</h2>
+      <div class="feature-grid">
+        <div class="feature-item">
+          <span class="feature-icon">⏱️</span>
+          <h3>复杂度速查</h3>
+          <p>常见数据结构时间/空间复杂度一目了然</p>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">🔄</span>
+          <h3>排序对比</h3>
+          <p>8种排序算法详细对比，考点标注</p>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">🌳</span>
+          <h3>树与图</h3>
+          <p>遍历方法、重要公式、DFS/BFS详解</p>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">💡</span>
+          <h3>代码示例</h3>
+          <p>10+经典算法代码，可直接运行</p>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">📝</span>
+          <h3>面试真题</h3>
+          <p>LeetCode高频题，详细解题思路</p>
+        </div>
+        <div class="feature-item">
+          <span class="feature-icon">🎯</span>
+          <h3>可视化演示</h3>
+          <p>排序动画、树操作、直观理解算法</p>
         </div>
       </div>
     </section>
 
-    <!-- Trending songs -->
-    <section class="section">
-      <div class="section-header">
-        <h2>热门推荐</h2>
-      </div>
-      <div class="songs-grid">
-        <SongCard 
-          v-for="(song, index) in trendingSongs" 
-          :key="song.id" 
-          :song="song"
-          :playlist="trendingSongs"
-          :index="index"
-          @remove="handleRemoveSong"
-        />
-      </div>
-    </section>
-
-    <!-- New releases -->
-    <section class="section">
-      <div class="section-header">
-        <h2>新歌首发</h2>
-      </div>
-      <div class="songs-grid">
-        <SongCard 
-          v-for="(song, index) in newReleases" 
-          :key="song.id" 
-          :song="song"
-          :playlist="newReleases"
-          :index="index"
-          @remove="handleRemoveSong"
-        />
-      </div>
-    </section>
-
-    <!-- Genre section -->
-    <section class="section">
-      <div class="section-header">
-        <h2>按风格浏览</h2>
-      </div>
-      <div class="genres-grid">
-        <router-link 
-          v-for="genre in genres" 
-          :key="genre.name" 
-          :to="{ name: 'Genre', params: { genre: genre.name } }"
-          class="genre-card"
-          :style="{ background: genre.gradient }"
-          :aria-label="`浏览${genre.name}歌曲`"
-        >
-          <span>{{ genre.name }}</span>
+    <section class="quick-access">
+      <h2>🚀 快速入口</h2>
+      <div class="quick-links">
+        <router-link to="/dsa" class="quick-link">
+          <span>📊</span> 复杂度表
+        </router-link>
+        <router-link to="/dsa" class="quick-link">
+          <span>🔢</span> 排序算法
+        </router-link>
+        <router-link to="/algorithm" class="quick-link">
+          <span>🔍</span> 二分查找
+        </router-link>
+        <router-link to="/algorithm" class="quick-link">
+          <span>📐</span> 动态规划
+        </router-link>
+        <router-link to="/interview" class="quick-link">
+          <span>🏷️</span> 两数之和
+        </router-link>
+        <router-link to="/practice" class="quick-link">
+          <span>🌲</span> BST操作
+        </router-link>
+        <router-link to="/game" class="quick-link">
+          <span>⚡</span> 反应测试
         </router-link>
       </div>
     </section>
+
+    <footer class="footer">
+      <p>💪 祝你期末考试顺利！</p>
+      <p class="tip">提示：记得多动手写代码，光看不练假把式！</p>
+    </footer>
   </div>
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/stores/auth'
-import { usePlayerStore } from '@/stores/player'
-import { usePlaylistStore } from '@/stores/playlist'
-import { musicService } from '@/services/music'
-import { storeToRefs } from 'pinia'
-import SongCard from '@/components/SongCard.vue'
-
-const router = useRouter()
-const authStore = useAuthStore()
-const playerStore = usePlayerStore()
-const playlistStore = usePlaylistStore()
-
-const { isLoggedIn, userId } = storeToRefs(authStore)
-
-const charts = ref([])
-const trendingSongs = ref([])
-const newReleases = ref([])
-const dailyMix = ref(null)
-
-const genres = [
-  { name: '电子音乐', gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)' },
-  { name: '流行音乐', gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)' },
-  { name: '摇滚乐', gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)' },
-  { name: '嘻哈', gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)' },
-  { name: '爵士乐', gradient: 'linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)' },
-  { name: '古典乐', gradient: 'linear-gradient(135deg, #d299c2 0%, #fef9d7 100%)' }
-]
-
-onMounted(async () => {
-  await loadData()
-})
-
-async function loadData() {
-  try {
-    charts.value = await musicService.getCharts()
-    
-    // Get trending songs (filter out not interested ones)
-    const allSongs = await musicService.getAllSongs()
-    trendingSongs.value = allSongs
-      .filter(s => !playlistStore.isNotInterested(s.id))
-      .sort((a, b) => b.playCount - a.playCount)
-      .slice(0, 6)
-
-    // New releases (just use random for mock)
-    newReleases.value = await musicService.getRandomChartSongs(6)
-
-    // Daily mix for logged-in users
-    if (isLoggedIn.value) {
-      dailyMix.value = await musicService.getDailyMix(userId.value)
-    }
-  } catch (error) {
-    console.error('Failed to load data:', error)
-  }
-}
-
-function playRandomFromChart() {
-  if (charts.value.length > 0 && charts.value[0].songs.length > 0) {
-    const randomSongs = [...charts.value[0].songs].sort(() => Math.random() - 0.5)
-    playerStore.setPlaylist(randomSongs, 0)
-    playerStore.setPlayMode('random')
-  }
-}
-
-function playChart(chart) {
-  playerStore.setPlaylist(chart.songs, 0)
-}
-
-function goToChart(chart) {
-  router.push({ name: 'PlaylistDetail', params: { id: chart.id } })
-}
-
-function handleRemoveSong(songId) {
-  trendingSongs.value = trendingSongs.value.filter(s => s.id !== songId)
-  newReleases.value = newReleases.value.filter(s => s.id !== songId)
-}
 </script>
 
 <style scoped>
 .home-view {
-  padding-bottom: 100px;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 40px 20px;
 }
 
-/* Hero section */
-.hero-section {
-  background: linear-gradient(135deg, var(--color-primary) 0%, #764ba2 100%);
-  padding: 80px 40px;
+.hero {
+  text-align: center;
+  color: white;
+  margin-bottom: 40px;
+}
+
+.hero h1 {
+  font-size: 32px;
+  margin: 0;
+}
+
+.tagline {
+  font-size: 18px;
+  opacity: 0.9;
+  margin-top: 12px;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto 48px;
+}
+
+.card {
+  display: block;
+  padding: 28px;
+  border-radius: 20px;
+  text-decoration: none;
+  color: white;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+}
+
+.card-1 { background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%); }
+.card-2 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); }
+.card-3 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+.card-4 { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); }
+
+.card-icon {
+  font-size: 42px;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.card h2 {
+  margin: 0 0 10px;
+  font-size: 22px;
+}
+
+.card p {
+  margin: 0 0 16px;
+  opacity: 0.9;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.card-btn {
+  display: inline-block;
+  padding: 8px 18px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 20px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.features, .quick-access {
+  max-width: 900px;
+  margin: 0 auto 40px;
+  padding: 32px;
+  background: rgba(255,255,255,0.1);
   border-radius: 24px;
-  margin: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.features h2, .quick-access h2 {
+  text-align: center;
+  color: white;
+  margin: 0 0 28px;
+  font-size: 22px;
+}
+
+.feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 20px;
+}
+
+.feature-item {
   text-align: center;
   color: white;
 }
 
-.hero-content h1 {
-  font-size: 48px;
-  margin: 0;
-}
-
-.hero-content p {
-  font-size: 18px;
-  opacity: 0.9;
-  margin: 16px 0 32px;
-}
-
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 12px 24px;
-  border-radius: 30px;
-  font-size: 16px;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  transition: all 0.2s;
-}
-
-.btn-primary {
-  background: white;
-  color: var(--color-primary);
-}
-
-.btn-primary:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
-}
-
-.btn-lg {
-  padding: 16px 32px;
-  font-size: 18px;
-}
-
-/* Sections */
-.section {
-  padding: 40px 20px;
-}
-
-.section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 24px;
-}
-
-.section-header h2 {
-  font-size: 24px;
-  margin: 0;
-}
-
-.section-desc {
-  color: var(--color-text-secondary);
-  font-size: 14px;
-  margin: 4px 0 0;
-}
-
-.see-all {
-  color: var(--color-text-secondary);
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 500;
-  transition: color 0.2s;
-}
-
-.see-all:hover {
-  color: var(--color-primary);
-}
-
-/* Songs grid */
-.songs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: 24px;
-}
-
-/* Charts grid */
-.charts-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 20px;
-}
-
-.chart-card {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  background: var(--color-background-soft);
-  border-radius: 12px;
-  padding: 16px;
-  cursor: pointer;
-  transition: all 0.2s;
-  position: relative;
-}
-
-.chart-card:hover {
-  background: var(--color-background-mute);
-  transform: translateY(-2px);
-}
-
-.chart-cover {
-  width: 80px;
-  height: 80px;
-  border-radius: 8px;
-  object-fit: cover;
-}
-
-.chart-info {
-  flex: 1;
-}
-
-.chart-info h3 {
-  margin: 0;
-  font-size: 16px;
-}
-
-.chart-info p {
-  margin: 4px 0;
-  font-size: 13px;
-  color: var(--color-text-secondary);
-}
-
-.song-count {
-  font-size: 12px;
-  color: var(--color-text-muted);
-}
-
-.play-chart-btn {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  background: var(--color-primary);
-  color: white;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 0;
-  transform: translateX(10px);
-  transition: all 0.2s;
-}
-
-.chart-card:hover .play-chart-btn {
-  opacity: 1;
-  transform: translateX(0);
-}
-
-.play-chart-btn:hover {
-  transform: scale(1.1);
-  background: var(--color-primary-hover);
-}
-
-/* Genres grid */
-.genres-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-  gap: 16px;
-}
-
-.genre-card {
-  padding: 24px 20px;
-  border-radius: 12px;
-  color: white;
-  font-weight: 600;
-  font-size: 16px;
-  cursor: pointer;
-  transition: transform 0.2s, box-shadow 0.2s;
-  text-decoration: none;
+.feature-icon {
+  font-size: 32px;
   display: block;
+  margin-bottom: 10px;
 }
 
-.genre-card:hover {
+.feature-item h3 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.feature-item p {
+  margin: 0;
+  font-size: 12px;
+  opacity: 0.8;
+  line-height: 1.4;
+}
+
+.quick-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  justify-content: center;
+}
+
+.quick-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 18px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 20px;
+  color: white;
+  font-size: 14px;
+  text-decoration: none;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.quick-link:hover {
+  background: rgba(255,255,255,0.25);
   transform: scale(1.05);
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
 }
 
-.genre-card:focus {
-  outline: 2px solid white;
-  outline-offset: 2px;
+.footer {
+  text-align: center;
+  color: white;
+  margin-top: 20px;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .hero-section {
-    padding: 40px 20px;
-    margin: 10px;
-  }
+.footer p {
+  margin: 8px 0;
+}
 
-  .hero-content h1 {
-    font-size: 32px;
-  }
+.footer .tip {
+  font-size: 14px;
+  opacity: 0.8;
+}
 
-  .songs-grid {
-    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-    gap: 16px;
-  }
-
-  .charts-grid {
-    grid-template-columns: 1fr;
-  }
+@media (max-width: 600px) {
+  .hero h1 { font-size: 24px; }
+  .card { padding: 20px; }
+  .features, .quick-access { padding: 20px; }
+  .cards-grid { gap: 16px; }
 }
 </style>
